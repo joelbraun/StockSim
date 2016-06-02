@@ -1,7 +1,9 @@
-from stockex import stockwrapper as sw
+from optionchain import OptionChain
 
-data = sw.YahooData()
+oc = OptionChain('NASDAQ:GOOG')
 
-file = open('test.txt', 'w')
+oc.to_excel() # outputs puts and calls in an excel sheet
 
-file.write(str(data.get_current(['GOOG'])))
+print(oc.puts)
+
+print(oc.calls)
