@@ -1,7 +1,8 @@
 from QuantLib import *
 import csv
 import json
-
+from optionchain import OptionChain
+from googlefinance import *
 #This file has been adapted from a quantlib example in python.
 
 #where each is the following:
@@ -26,25 +27,6 @@ def EstimateOption(todaysDate, expiryDate, vol, opttype, underlying, strike):
     volatility = BlackConstantVol(todaysDate, UnitedStates(), vol, Actual365Fixed())
     dividendYield = FlatForward(settlementDate, 0.00, Actual365Fixed())
 
-    # report
-    header = '%19s' % 'method' + ' |' + \
-            ' |'.join(['%17s' % tag for tag in ['value',
-                                                'estimated error',
-                                                'actual error' ] ])
-    print
-    print header
-    print '-'*len(header)
-
-    refValue = None
-    def report(method, x, dx = None):
-        e = '%.4f' % abs(x-refValue)
-        x = '%.5f' % x
-        if dx:
-            dx = '%.4f' % dx
-        else:
-            dx = 'n/a'
-        print '%19s' % method + ' |' + \
-            ' |'.join(['%17s' % y for y in [x, dx, e] ])
 
     # good to go
 
@@ -52,67 +34,57 @@ def EstimateOption(todaysDate, expiryDate, vol, opttype, underlying, strike):
                                         YieldTermStructureHandle(dividendYield),
                                         YieldTermStructureHandle(riskFreeRate),
                                         BlackVolTermStructureHandle(volatility))
-
+    
+    results = []
     option = VanillaOption(payoff, exercise)
-
-    refValue = 4.48667344
-    report('reference value',refValue)
-
-    # method: analytic
-
     option.setPricingEngine(BaroneAdesiWhaleyEngine(process))
-    report('Barone-Adesi-Whaley',option.NPV())
-
+    results.append(round(option.NPV(),3))
     option.setPricingEngine(BjerksundStenslandEngine(process))
-    report('Bjerksund-Stensland',option.NPV())
-
-    # method: finite differences
+    results.append(round(option.NPV(),3))
+    
     timeSteps = 801
     gridPoints = 800
-
-    #option.setPricingEngine(FDAmericanEngine(process,timeSteps,gridPoints))
-    report('finite differences',option.NPV())
-
-    # method: binomial
+    option.setPricingEngine(FDAmericanEngine(process,timeSteps,gridPoints))
+    results.append(round(option.NPV(),3))
+    
     timeSteps = 801
-
     option.setPricingEngine(BinomialVanillaEngine(process,'jr',timeSteps))
-    report('binomial (JR)',option.NPV())
-
+    results.append(round(option.NPV(),3))
     option.setPricingEngine(BinomialVanillaEngine(process,'crr',timeSteps))
-    report('binomial (CRR)',option.NPV())
-
+    results.append(round(option.NPV(),3))
     option.setPricingEngine(BinomialVanillaEngine(process,'eqp',timeSteps))
-    report('binomial (EQP)',option.NPV())
-
+    results.append(round(option.NPV(),3))
     option.setPricingEngine(BinomialVanillaEngine(process,'trigeorgis',timeSteps))
-    report('bin. (Trigeorgis)',option.NPV())
-
+    results.append(round(option.NPV(),3))
     option.setPricingEngine(BinomialVanillaEngine(process,'tian',timeSteps))
-    report('binomial (Tian)',option.NPV())
-
+    results.append(round(option.NPV(),3))
     option.setPricingEngine(BinomialVanillaEngine(process,'lr',timeSteps))
-    report('binomial (LR)',option.NPV())
-
-#def GenerateOptionData()
-
+    results.append(round(option.NPV(),3))
+    
+    return results
 
 def main():
     symbols = import_from_csv()
     print symbols
-    #for i in symbols:
-    #    url = 'http://www.google.com/finance/option_chain?q=' + i + '&output=json&expy=2016&expm=' '&expd='
-    #    response = urllib.request.urlopen()
-    #for i in tocalculate:
-    #or how it would be
-    todaysDate = Date(27,May,2016)
-    expiryDate = Date(3,June,2016)
-    vol = .26
-    underlying = 99.96
-    opttype = Option.Call
-    strike = 97.5
-    
-    EstimateOption(todaysDate, expiryDate, vol, opttype, underlying, strike)
+    with open('sim.csv', 'wb',) as currdata:
+        writer = csv.writer(currdata, delimiter=',')
+        for i in symbols:
+            oc = OptionChain('NASDAQ:' + i)
+            underlying = float(getQuotes(i)[0]['LastTradeWithCurrency'])
+            for j in oc.puts:
+                strike = float(j['strike'])
+                if (str(j['p']) != '-'):
+                    opttype = Option.Put
+                    vol = .26
+                    todaysDate = Date(1,June,2016)
+                    expiryDate = Date(3,June,2016)
+                    print('-'*32)
+                    print(i)
+                    print(j['s'])
+                    print(str(j['strike']))
+                    print(str(j['p']))
+                    results = EstimateOption(todaysDate, expiryDate, vol, opttype, underlying,strike)
+                    writer.writerow([str(i), str(j['s']), str(j['strike']), str(j['p'])] + results)
 
 #imports all relevant stock symbols from CSV
 def import_from_csv():

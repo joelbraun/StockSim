@@ -2,56 +2,10 @@ import requests
 
 from pandas import DataFrame
 from requests.exceptions import ConnectionError
+from utils import json_decode
 
 OPTION_CHAIN_URL = 'https://www.google.com/finance/option_chain'
 
-import json
-import token, tokenize
-
-from io import *
-
-
-# using below solution fixes the json output from google
-# http://stackoverflow.com/questions/4033633/handling-lazy-json-in-python-expecting-property-name
-def fixLazyJson (in_text):
-    tokengen = tokenize.generate_tokens(StringIO(in_text).readline)
-
-    result = []
-    for tokid, tokval, _, _, _ in tokengen:
-        # fix unquoted strings
-        if (tokid == token.NAME):
-            if tokval not in ['true', 'false', 'null', '-Infinity', 'Infinity', 'NaN']:
-                tokid = token.STRING
-                tokval = u'"%s"' % tokval
-
-        # fix single-quoted strings
-        elif (tokid == token.STRING):
-            if tokval.startswith ("'"):
-                tokval = u'"%s"' % tokval[1:-1].replace ('"', '\\"')
-
-        # remove invalid commas
-        elif (tokid == token.OP) and ((tokval == '}') or (tokval == ']')):
-            if (len(result) > 0) and (result[-1][1] == ','):
-                result.pop()
-
-        # fix single-quoted strings
-        elif (tokid == token.STRING):
-            if tokval.startswith ("'"):
-                tokval = u'"%s"' % tokval[1:-1].replace ('"', '\\"')
-
-        result.append((tokid, tokval))
-
-    return tokenize.untokenize(result)
-
-
-def json_decode(json_string):
-    try:
-        ret = json.loads(str(json_string))
-    except:
-        json_string = fixLazyJson(str(json_string))
-        ret = json.loads(fixLazyJson(str(json_string[2:-1])))
-
-    return ret
 
 class OptionChain(object):
 
@@ -70,7 +24,6 @@ class OptionChain(object):
         }
 
         data = self._get_content(OPTION_CHAIN_URL, params)
-
         # get first calls and puts
         calls = data['calls']
         puts = data['puts']
@@ -98,10 +51,10 @@ class OptionChain(object):
     def to_excel(self, puts_path='/tmp/puts.xls', calls_path='/tmp/calls.xls'):
         dataframe = DataFrame(data=self.puts)
         dataframe.to_excel(puts_path)
-        print ('Puts saved at %s' % (puts_path))
+        print 'Puts saved at %s' % (puts_path)
         dataframe = DataFrame(data=self.calls)
         dataframe.to_excel(calls_path)
-        print('Calls saved at %s' % (calls_path))
+        print 'Calls saved at %s' % (calls_path)
 
 
     def _get_content(self, url, params):

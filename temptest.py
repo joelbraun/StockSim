@@ -1,9 +1,5 @@
-from optionchain import OptionChain
+from pandas.io.data import Options
 
-oc = OptionChain('NASDAQ:GOOG')
-
-oc.to_excel() # outputs puts and calls in an excel sheet
-
-print(oc.puts)
-
-print(oc.calls)
+aapl = Options('AAPL')
+vals = aapl.get_options_data()
+print(vals)
