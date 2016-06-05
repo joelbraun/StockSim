@@ -1,0 +1,53 @@
+%*******************************************************************************
+%****************************** Second Chapter *********************************
+%*******************************************************************************
+\chapter{Simulation Design}
+\section{Tools}
+
+For this simulation, we relied on several open-source libraries and publicly accessible financial data. A testing framework was developed in Python 2.x for which accessed financial data and performed simulations based on current option availability and parameters. 
+
+The cornerstone of this effort was the open source C++ library QuantLib, which provides tools for quantitative finance. QuantLib is a comparatively massive library, taking several hours to compile and measuring several GB in size. It contained a complete options-pricing simulator incorporating all pricing equations being tested. This was integrated with a Python 2.x wrapper framework that is also part of the QuantLib project.
+
+Also used was the pip package \verb|python-google-options-chain|, which downloads and converts Google finance data from its JSON endpoints. 
+
+To calculate the volatility values used, historical data from Yahoo! finance (provided as part of the \verb|pandas| library) was used. This was integrated in with the \verb|pyflux| package, which provided GARCH calculation functionality for the simulation.
+
+\section{Simulation Method}
+For the purposes of our simulation, it was determined that options prices would only be compared for the Dow Jones Industrial Average, a set of thirty shares that is a price-weighted aggregation of the largest corporations in America. This scope limitation was designed to keep data measurable- it is likely the S\&P 500 would provide a better cross section of American industry. 
+
+For each of these listings on the index, simulations were run in all situations where a current option price was available. Two separate datasets were collated for the shares on the index; one for call options and another for put options. This method was used for the one week, one month, and six month tests.
+
+\section{Simulation Framework}
+
+The framework under which these tests were conducted was developed in Python 2.x for compatibility purposes with available QuantLib Python libraries. These were based off of samples provided by the QuantLib project for options simulation\ref{???}. The testing framework itself merely served to facilitate connection between real data procured from Google Finance and the generated valuations for each option. Once an option for one of our symbols was found to have a present value, our simulation pulled additional data on underlying asset price and calculated a volatility value. This volatility value, the critical part of the simulation, was then used in conjunction with other parameters to formulate an options price. 
+
+After a price was formulated, all data was written in rows to a CSV file for later analysis. This data generation isolated puts and calls for further analysis as to the accuracy of the pricing of each. Each CSV file was then analyzed and the results prepared in Python using various additional libraries.
+
+\begin{table}[h!]
+\centering
+\begin{tabu} to .8\textwidth { | X[c] | X[c] |  }
+ \hline
+ Column & Value \\
+ \hline
+ Symbol & AAPL \\
+ Tag & AAPL160610P0009950  \\
+Strike & 100 \\
+Real & 2.72 \\
+Barone-Adesi Whaley & 2.364 \\
+Bjerksund-Stensland & 2.364 \\
+FD American & 2.367 \\
+Jarrow-Rudd & 2.367 \\
+Cox-Ross-Rubenstein & 2.367 \\
+Equal Probabilities & 2.367 \\
+Trigeorgis & 2.367 \\
+Tian & 2.367 \\
+Leisen-Reimer & 2.367 \\
+\hline
+\end{tabu}
+\caption {\textbf{Example data row in an output CSV.}}
+\end{table}
+
+The data in table 2.1 is representative of a single row in a CSV file. Depending on the amount of price data, individual runs for options yielded around 14,000 row entries (including both put and call valuations). From this CSV format, data could be reloaded back in to a separately designed Python analysis library for further investigation. Depending on machine speed, individual runs could take as many as several minutes to complete. Simulations were not time dependent and no performance improvements or modifications (such as multiprocessing, etc) were made to the original framework. 
+
+\subsection{Notes on Computational Performance}
+While in the case of our simulations no tangible performance issues were experienced, it is important to consider that these pricing models vary in complexity. The binomial method, while boasting a higher perceived accuracy, is typically less computationally performant than a Black-Scholes implementation. Likewise, some of the models tested (such as Barone-Adesi Whaley) are actually approximation models. Thus, they are designed to be more performant and provide for quicker price calculations. Various research papers are available on this subject, but they are beyond the scope of our analysis.
