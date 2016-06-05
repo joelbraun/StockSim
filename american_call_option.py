@@ -47,28 +47,23 @@ def EstimateOption(todaysDate, expiryDate, vol, opttype, underlying, strike):
     results = []
     option = VanillaOption(payoff, exercise)
     option.setPricingEngine(BaroneAdesiWhaleyEngine(process))
-    results.append(round(option.NPV(),3))
+    results.append(option.NPV())
     option.setPricingEngine(BjerksundStenslandEngine(process))
-    results.append(round(option.NPV(),3))
-    
-    timeSteps = 801
-    gridPoints = 800
-    option.setPricingEngine(FDAmericanEngine(process,timeSteps,gridPoints))
-    results.append(round(option.NPV(),3))
+    results.append(option.NPV())
     
     timeSteps = 801
     option.setPricingEngine(BinomialVanillaEngine(process,'jr',timeSteps))
-    results.append(round(option.NPV(),3))
+    results.append(option.NPV())
     option.setPricingEngine(BinomialVanillaEngine(process,'crr',timeSteps))
-    results.append(round(option.NPV(),3))
+    results.append(option.NPV())
     option.setPricingEngine(BinomialVanillaEngine(process,'eqp',timeSteps))
-    results.append(round(option.NPV(),3))
+    results.append(option.NPV())
     option.setPricingEngine(BinomialVanillaEngine(process,'trigeorgis',timeSteps))
-    results.append(round(option.NPV(),3))
+    results.append(option.NPV())
     option.setPricingEngine(BinomialVanillaEngine(process,'tian',timeSteps))
-    results.append(round(option.NPV(),3))
+    results.append(option.NPV())
     option.setPricingEngine(BinomialVanillaEngine(process,'lr',timeSteps))
-    results.append(round(option.NPV(),3))
+    results.append(option.NPV())
     
     return results
 
@@ -77,6 +72,7 @@ def main():
     print symbols
     with open('simcalls.csv', 'wb',) as currdata:
         writer = csv.writer(currdata, delimiter=',')
+        writer.writerow(["Symbol","Tag", "Strike", "Price", "Barone-Adesi Whaley", "Bjerksund Stensland","Cox-Ross-Rubenstein", "Jarrow-Rudd","Equal Probabilities", "Trigeorgis", "Tian", "Leisen-Reimer"])
         for i in symbols:
             oc = OptionChain('NASDAQ:' + i)
             underlying = float(getQuotes(i)[0]['LastTradeWithCurrency'])
