@@ -70,11 +70,11 @@ def EstimateOption(todaysDate, expiryDate, vol, opttype, underlying, strike):
 def main():
     symbols = import_from_csv()
     print symbols
-    with open('simcalls.csv', 'wb',) as currdata:
+    with open('simcallsW.csv', 'wb',) as currdata:
         writer = csv.writer(currdata, delimiter=',')
         writer.writerow(["Symbol","Tag", "Strike", "Price", "Barone-Adesi Whaley", "Bjerksund Stensland","Cox-Ross-Rubenstein", "Jarrow-Rudd","Equal Probabilities", "Trigeorgis", "Tian", "Leisen-Reimer"])
         for i in symbols:
-            oc = OptionChain('NASDAQ:' + i)
+            oc = OptionChain('NASDAQ:' + i,{"expy":"2016", "expm":"06", "expd":"10"})
             underlying = float(getQuotes(i)[0]['LastTradeWithCurrency'])
             stock = DataReader(i, 'yahoo', datetime(2014,1,1), datetime(2016,6,1))
             returns = pd.DataFrame(np.diff(np.log(stock['Adj Close'].values)))

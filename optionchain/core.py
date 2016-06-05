@@ -9,7 +9,7 @@ OPTION_CHAIN_URL = 'https://www.google.com/finance/option_chain'
 
 class OptionChain(object):
 
-    def __init__(self, q):
+    def __init__(self, q, ps):
         """
         Usage: 
         from optionchain import OptionChain
@@ -22,27 +22,14 @@ class OptionChain(object):
             'q': q,
             'output': 'json'
         }
+        params.update(ps)
+        print(params)
 
         data = self._get_content(OPTION_CHAIN_URL, params)
         # get first calls and puts
         calls = data['calls']
         puts = data['puts']
 
-        for (ctr, exp) in enumerate(data['expirations']):
-            # we already got the first put and call
-            # skip first
-            if ctr:
-                params['expd'] = exp['d']
-                params['expm'] = exp['m']
-                params['expy'] = exp['y']
-
-                new_data = self._get_content(OPTION_CHAIN_URL, params)
-
-                if new_data.get('calls') is not None:
-                    calls += new_data.get('calls')
-
-                if new_data.get('puts') is not None:
-                    puts += new_data.get('puts')
 
         self.calls = calls
         self.puts = puts
@@ -59,6 +46,7 @@ class OptionChain(object):
 
     def _get_content(self, url, params):
         response = requests.get(url, params=params)
+        print(response.url)
         if response.status_code == 200:
             content_json = response.content
             data = json_decode(content_json)

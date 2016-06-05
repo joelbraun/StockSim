@@ -24,7 +24,7 @@ import matplotlib.pyplot as plt
 def EstimateOption(todaysDate, expiryDate, vol, opttype, underlying, strike):
     # global data
     Settings.instance().evaluationDate = todaysDate
-    settlementDate = todaysDate
+    settlementDate = Date(10,June,2016)
     riskFreeRate = FlatForward(settlementDate, 0.06, Actual365Fixed())
 
     # option parameters
@@ -33,7 +33,7 @@ def EstimateOption(todaysDate, expiryDate, vol, opttype, underlying, strike):
 
     # market data
     underlying = SimpleQuote(underlying)
-    volatility = BlackConstantVol(todaysDate, UnitedStates(), vol, Actual365Fixed())
+    volatility = BlackConstantVol(todaysDate, UnitedStates(), .2, Actual365Fixed())
     dividendYield = FlatForward(settlementDate, 0.00, Actual365Fixed())
 
 
@@ -70,23 +70,23 @@ def EstimateOption(todaysDate, expiryDate, vol, opttype, underlying, strike):
 def main():
     symbols = import_from_csv()
     print symbols
-    with open('simputsW.csv', 'wb',) as currdata:
+    with open('simputsJan17.csv', 'wb',) as currdata:
         writer = csv.writer(currdata, delimiter=',')
         writer.writerow(["Symbol","Tag", "Strike", "Price", "Barone-Adesi Whaley", "Bjerksund Stensland","Cox-Ross-Rubenstein", "Jarrow-Rudd","Equal Probabilities", "Trigeorgis", "Tian", "Leisen-Reimer"])
         for i in symbols:
-            oc = OptionChain('NASDAQ:' + i,{"expy":"2016", "expm":"06", "expd":"10"})
+            oc = OptionChain('NASDAQ:' + i, {"expy":"2017", "expm":"01", "expd":"20"})
             underlying = float(getQuotes(i)[0]['LastTradeWithCurrency'])
             stock = DataReader(i, 'yahoo', datetime(2014,1,1), datetime(2016,6,1))
             returns = pd.DataFrame(np.diff(np.log(stock['Adj Close'].values)))
             model = pf.GARCH(abs(returns), p=1, q=1)
             x = model.fit()
-            vol = float(model.predict(h=7)['0'].values.tolist()[-1]) * float(100)
+            vol = float(model.predict(h=158)['0'].values.tolist()[-1]) * float(100)
             for j in oc.puts:
                 strike = float(j['strike'])
                 if (str(j['p']) != '-'):
                     opttype = Option.Put
                     todaysDate = Date(4,June,2016)
-                    expiryDate = Date(10,June,2016)
+                    expiryDate = Date(20,January,2017)
                     print('-'*32)
                     print(i)
                     print(j['s'])
