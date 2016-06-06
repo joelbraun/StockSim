@@ -49,8 +49,8 @@ def EstimateOption(todaysDate, expiryDate, vol, opttype, underlying, strike):
     option = VanillaOption(payoff, exercise)
     option.setPricingEngine(BaroneAdesiWhaleyEngine(process))
     results.append(option.NPV())
-    #option.setPricingEngine(BjerksundStenslandEngine(process))
-    #results.append(option.NPV())
+    option.setPricingEngine(BjerksundStenslandEngine(process))
+    results.append(option.NPV())
     
     timeSteps = 801
     option.setPricingEngine(BinomialVanillaEngine(process,'jr',timeSteps))
