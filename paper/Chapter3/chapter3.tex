@@ -1,145 +1,80 @@
 \chapter{Results Analysis}
 
-\section{Overview}
-And now I begin my third chapter here \dots
+\section{Short Dated Puts and Calls}
 
-And now to cite some more people~\citet{Rea85,Ancey1996}
+The first test we performed involved all priced short-dated puts and calls for stocks on the Dow. Our test was run one business week prior to the expiry of the puts and calls and exported for analysis. For each of these, the simplest test we could use to determine the differences from actual values was a Sum Squared Error (SSE) test. The results are shown in table 3.1.
 
-\subsection{A note on analysis}
-\dots and some more 
-
-\subsection{Second subsection in the first section}
-\dots and some more \dots
-
-\subsubsection{First subsub section in the second subsection}
-\dots and some more in the first subsub section otherwise it all looks the same
-doesn't it? well we can add some text to it \dots
-
-\subsection{Third subsection in the first section}
-\dots and some more \dots
-
-\subsubsection{First subsub section in the third subsection}
-\dots and some more in the first subsub section otherwise it all looks the same
-doesn't it? well we can add some text to it and some more and some more and
-some more and some more and some more and some more and some more \dots
-
-\subsubsection{Second subsub section in the third subsection}
-\dots and some more in the first subsub section otherwise it all looks the same
-doesn't it? well we can add some text to it \dots
-
-\section{Second section of the third chapter}
-and here I write more \dots
-
-\section{The layout of formal tables}
-This section has been modified from ``Publication quality tables in \LaTeX*''
- by Simon Fear.
-
-The layout of a table has been established over centuries of experience and 
-should only be altered in extraordinary circumstances. 
-
-When formatting a table, remember two simple guidelines at all times:
-
-\begin{enumerate}
-  \item Never, ever use vertical rules (lines).
-  \item Never use double rules.
-\end{enumerate}
-
-These guidelines may seem extreme but I have
-never found a good argument in favour of breaking them. For
-example, if you feel that the information in the left half of
-a table is so different from that on the right that it needs
-to be separated by a vertical line, then you should use two
-tables instead. Not everyone follows the second guideline:
-
-There are three further guidelines worth mentioning here as they
-are generally not known outside the circle of professional
-typesetters and subeditors:
-
-\begin{enumerate}\setcounter{enumi}{2}
-  \item Put the units in the column heading (not in the body of
-          the table).
-  \item Always precede a decimal point by a digit; thus 0.1
-      {\em not} just .1.
-  \item Do not use `ditto' signs or any other such convention to
-      repeat a previous value. In many circumstances a blank
-      will serve just as well. If it won't, then repeat the value.
-\end{enumerate}
-
-A frequently seen mistake is to use `\textbackslash begin\{center\}' \dots `\textbackslash end\{center\}' inside a figure or table environment. This center environment can cause additional vertical space. If you want to avoid that just use `\textbackslash centering'
-
-
-\begin{table}
-\caption{A badly formatted table}
+\begin{table}[h!]
 \centering
-\label{table:bad_table}
-\begin{tabular}{|l|c|c|c|c|}
-\hline 
-& \multicolumn{2}{c}{Species I} & \multicolumn{2}{c|}{Species II} \\ 
+\begin{tabu} to .8\textwidth { | X[c] | X[c] | }
+ \hline
+Method & Combined SSE (Puts + Calls)\\
+ \hline
+Barone-Adesi Whaley & 1633.569682 \\
+Bjerksund-Stensland &  1633.67047532\\
+Cox-Ross-Rubenstein & 1634.02600139 \\
+Jarrow-Rudd & 1634.02313417 \\
+Equal Probabilities & 1634.140215 \\
+Trigeorgis & 1634.02323538 \\
+Tian & 1634.02877159\\
+Leisen-Reimer & 1633.9644903\\
 \hline
-Dental measurement  & mean & SD  & mean & SD  \\ \hline 
-\hline
-I1MD & 6.23 & 0.91 & 5.2  & 0.7  \\
-\hline 
-I1LL & 7.48 & 0.56 & 8.7  & 0.71 \\
-\hline 
-I2MD & 3.99 & 0.63 & 4.22 & 0.54 \\
-\hline 
-I2LL & 6.81 & 0.02 & 6.66 & 0.01 \\
-\hline 
-CMD & 13.47 & 0.09 & 10.55 & 0.05 \\
-\hline 
-CBL & 11.88 & 0.05 & 13.11 & 0.04\\ 
-\hline 
-\end{tabular}
+\end{tabu}
+\caption {\textbf{Combined SSE values from the one week expiry test.}}
 \end{table}
 
-\begin{table}
-\caption{A nice looking table}
+As shown in the table, for the one-week test there is a very small difference observed between the estimation methods. This indicates that, at least for the one week dated options, no method has a guiding advantage over the other. This is not unexpected; due to the very small time to expiry, the potential values of each method?s random walk are less inclined to deviate heavily.
+
+Diving further into the analysis, we elected to perform a threshold accuracy test which would give us a better idea of the values closeness to their intended value. For a threshold accuracy of 1 (that is, estimations were within \$1 of the actual price value, we saw that for put options each test typically 86\% of results fell within our expected range. This is quite good. Call options were less accurately priced, with roughly 75\% of modeled options falling within \$1 of expected price value. Still, neither were particularly poor representations.
+
+We then elected to plot the actual prices versus the estimated model's results. This gave us a better indication of the model's tendencies in estimation. The following graphs were produced for the one week puts and calls of an AAPL (Apple Inc.) stock. 
+
+\begin{center}
+\includegraphics[scale=0.66, keepaspectratio=true]{Chapter3/CRRCall1W.png}
+\includegraphics[scale=0.66, keepaspectratio=true]{Chapter3/CRRPut1W.png}
+\end{center}
+
+Both put and call charts indicate that our model seems to overestimate values. This is not necessarily unexpected, as results are generated entirely upon volatility. As we can see, however, in line with our previous threshold prediction values put prices are clearly more accurately priced. We also see that options with strike prices closer to the price of the share are much harder to predict. During these tests, AAPL shares were priced around \$98. 
+
+With this test, however, no clear leading model in options pricing has made itself apparent. There also appears to be little difference experienced in using the binomial model as opposed to Black-Scholes and its variants.
+
+\section{Long Dated Puts and Calls}
+
+Since option prices vary more widely as times extend out further, tests also had to be run for longer times in order to determine their accuracy. An exipry date approximately six months in the future (January 2017) was selected. The analysis was then rerun for both sum squared error and threshold accuracy. 
+
+\begin{table}[h!]
 \centering
-\label{table:nice_table}
-\begin{tabular}{l c c c c}
-\hline 
-\multirow{2}{*}{Dental measurement} & \multicolumn{2}{c}{Species I} & \multicolumn{2}{c}{Species II} \\ 
-\cline{2-5}
-  & mean & SD  & mean & SD  \\ 
+\begin{tabu} to .8\textwidth { | X[c] | X[c] | }
+ \hline
+Method & Combined SSE (Puts + Calls)\\
+ \hline
+Barone-Adesi Whaley & 41813.4995377\\
+Bjerksund-Stensland &  41838.2751664\\
+Cox-Ross-Rubenstein & 41777.9329279\\
+Jarrow-Rudd & 41777.7318535 \\
+ Equal Probabilities & 41817.923815\\
+Trigeorgis & 41778.030902 \\
+Tian & 41776.6236091\\
+Leisen-Reimer & 41775.6888507\\
 \hline
-I1MD & 6.23 & 0.91 & 5.2  & 0.7  \\
-
-I1LL & 7.48 & 0.56 & 8.7  & 0.71 \\
-
-I2MD & 3.99 & 0.63 & 4.22 & 0.54 \\
-
-I2LL & 6.81 & 0.02 & 6.66 & 0.01 \\
-
-CMD & 13.47 & 0.09 & 10.55 & 0.05 \\
-
-CBL & 11.88 & 0.05 & 13.11 & 0.04\\ 
-\hline 
-\end{tabular}
+\end{tabu}
+\caption {\textbf{Combined SSE values from the one month expiry test.}}
 \end{table}
 
 
-\begin{table}
-\caption{Even better looking table using booktabs}
-\centering
-\label{table:good_table}
-\begin{tabular}{l c c c c}
-\toprule
-\multirow{2}{*}{Dental measurement} & \multicolumn{2}{c}{Species I} & \multicolumn{2}{c}{Species II} \\ 
-\cmidrule{2-5}
-  & mean & SD  & mean & SD  \\ 
-\midrule
-I1MD & 6.23 & 0.91 & 5.2  & 0.7  \\
+Once again, though, we see very little difference in the values considering the six month expiry date. This is unexpected.  The values deviate by less than one hundred in range. Looking at a threshold accuracy value, we see a pattern of decreased accuracy, at least when pricing calls. Only 17\% of calls were within \$1 of their actual values. Sixty-eight percent of puts were accurate within \$1. When increasing the threshold to \$5, the results were far better at 73\% of calls and 90\% of puts. Still, $\pm\$5$ is a very wide margin of error considering the prices of individual options contracts.
 
-I1LL & 7.48 & 0.56 & 8.7  & 0.71 \\
+Expanding our analysis out, we'll once again look at our estimated prices for AAPL's six-month calls versus their real values. 
 
-I2MD & 3.99 & 0.63 & 4.22 & 0.54 \\
+\begin{center}
+\includegraphics[scale=0.66, keepaspectratio=true]{Chapter3/AAPL6MCall.png}
+\includegraphics[scale=0.66, keepaspectratio=true]{Chapter3/AAPL6MPut.png}
+\end{center}
 
-I2LL & 6.81 & 0.02 & 6.66 & 0.01 \\
+These graphs indicate very fair valuations in the case of put options, and much poorer accuracy for call options. This was indicated early on by the SSE values for puts and calls. Typically, SSE values for all call option tests were around 24,000, while put options had SSE values of around 18,000. Returning to the graphs, we see greater inaccuracy for options with strike prices around the underlying asset values. 
 
-CMD & 13.47 & 0.09 & 10.55 & 0.05 \\
+Surprisingly, in these tests there is once again no model which clearly leads in accuracy. SSE values for each of the models were all grouped closely, and the only discernable difference in accuracy that could be found was the pricing of put or call options.
 
-CBL & 11.88 & 0.05 & 13.11 & 0.04\\ 
-\bottomrule
-\end{tabular}
-\end{table}
+\section{One-Year Dated Puts and Calls}
+
+After observing little difference in the accuracies of the models for six-month expiry puts and calls, we decided to attempt to price options with one-year expiries. Many stocks on the DJIA don't have options data available for one year out, and as such we ended up with a limited dataset of available put and call options from AAPL and BA (Apple and Boeing). This dataset totaled 88 points for both puts and calls, and as such should be taken 
