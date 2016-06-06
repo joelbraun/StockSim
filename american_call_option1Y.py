@@ -76,7 +76,7 @@ def main():
         writer.writerow(["Symbol","Tag", "Strike", "Price", "Barone-Adesi Whaley", "Bjerksund Stensland","Cox-Ross-Rubenstein", "Jarrow-Rudd","Equal Probabilities", "Trigeorgis", "Tian", "Leisen-Reimer"])
         for i in symbols:
             try:
-                oc = OptionChain('NASDAQ:' + i, {"expy":"2017", "expm":"06", "expd":"16"})
+                oc = OptionChain('NASDAQ:' + i, {"expy":"2018", "expm":"01", "expd":"19"})
                 underlying = float(getQuotes(i)[0]['LastTradeWithCurrency'])
                 st = datetime(1990,1,1)
                 en = datetime(2014,1,1)
@@ -91,8 +91,8 @@ def main():
                     strike = float(j['strike'])
                     if (str(j['p']) != '-'):
                         opttype = Option.Call
-                        todaysDate = Date(4,June,2016)
-                        expiryDate = Date(16,June,2017)
+                        todaysDate = Date(6,June,2016)
+                        expiryDate = Date(19,January,2018)
                         print('-'*32)
                         print(i)
                         print(j['s'])
