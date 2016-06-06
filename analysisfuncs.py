@@ -15,7 +15,7 @@ def parseSimCalls(filename):
         data = rawLines[i].strip().split(',')
         resultsDict[(data[0],data[1])] = (float(data[2]),float(data[3]),float(data[4]),float(data[5]),
                                           float(data[6]),float(data[7]),float(data[8]),float(data[9]),
-                                          float(data[10]),float(data[11]),float(data[12]))
+                                          float(data[10]),float(data[11]))
     return resultsDict
         
 ## parses the simputs.csv file
@@ -31,11 +31,11 @@ def parseSimPuts(filename):
         if data[5] == 'nan':
             resultsDict[(data[0],data[1])] = (float(data[2]),float(data[3]),float(data[4]),float('0'),
                                               float(data[6]),float(data[7]),float(data[8]),float(data[9]),
-                                              float(data[10]),float(data[11]),float(data[12]))
+                                              float(data[10]),float(data[11]))
         else:
             resultsDict[(data[0],data[1])] = (float(data[2]),float(data[3]),float(data[4]),float(data[5]),
                                               float(data[6]),float(data[7]),float(data[8]),float(data[9]),
-                                              float(data[10]),float(data[11]),float(data[12]))
+                                              float(data[10]),float(data[11]))
     return resultsDict    
  
 
