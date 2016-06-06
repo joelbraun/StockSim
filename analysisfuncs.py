@@ -5,7 +5,7 @@ import numpy as np
 
 ## parses the simcalls.csv file
 ## returns a dictionary with key = (symbol, tag)
-## and value = (Strike,Real,Barone-Adesi Whaley,Bjerksund-Stensland,FDAmerican,Cox-Ross-Rubenstein,Jarrow-Rudd,Equal Probabilities,Trigeorgis,Tian,Leisen-Reimer)
+## and value = (Strike,Real,Barone-Adesi Whaley,Bjerksund-Stensland,Cox-Ross-Rubenstein,Jarrow-Rudd,Equal Probabilities,Trigeorgis,Tian,Leisen-Reimer)
 def parseSimCalls(filename):
     resultsDict = {}
     f = open(filename, 'r')
@@ -13,14 +13,15 @@ def parseSimCalls(filename):
     rawLines = raw.split('\n')
     for i in range(1,len(rawLines)):
         data = rawLines[i].strip().split(',')
-        resultsDict[(data[0],data[1])] = (float(data[2]),float(data[3]),float(data[4]),float(data[5]),
-                                          float(data[6]),float(data[7]),float(data[8]),float(data[9]),
-                                          float(data[10]),float(data[11]))
+        if len(data) == 12:
+            resultsDict[(data[0],data[1])] = (float(data[2]),float(data[3]),float(data[4]),float(data[5]),
+                                              float(data[6]),float(data[7]),float(data[8]),float(data[9]),
+                                              float(data[10]),float(data[11]))
     return resultsDict
         
 ## parses the simputs.csv file
 ## returns a dictionary with key = (symbol, tag)
-## and value = (Strike,Real,Barone-Adesi Whaley,Bjerksund-Stensland,FDAmerican,Cox-Ross-Rubenstein,Jarrow-Rudd,Equal Probabilities,Trigeorgis,Tian,Leisen-Reimer)
+## and value = (Strike,Real,Barone-Adesi Whaley,Bjerksund-Stensland,Cox-Ross-Rubenstein,Jarrow-Rudd,Equal Probabilities,Trigeorgis,Tian,Leisen-Reimer)
 def parseSimPuts(filename):
     resultsDict = {}
     f = open(filename, 'r')
@@ -28,11 +29,7 @@ def parseSimPuts(filename):
     rawLines = raw.split('\n')
     for i in range(1,len(rawLines)):
         data = rawLines[i].strip().split(',')
-        if data[5] == 'nan':
-            resultsDict[(data[0],data[1])] = (float(data[2]),float(data[3]),float(data[4]),float('0'),
-                                              float(data[6]),float(data[7]),float(data[8]),float(data[9]),
-                                              float(data[10]),float(data[11]))
-        else:
+        if len(data) == 12:
             resultsDict[(data[0],data[1])] = (float(data[2]),float(data[3]),float(data[4]),float(data[5]),
                                               float(data[6]),float(data[7]),float(data[8]),float(data[9]),
                                               float(data[10]),float(data[11]))
