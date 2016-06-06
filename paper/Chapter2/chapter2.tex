@@ -17,6 +17,8 @@ For the purposes of our simulation, it was determined that options prices would 
 
 For each of these listings on the index, simulations were run in all situations where a current option price was available. Two separate datasets were collated for the shares on the index; one for call options and another for put options. This method was used for the one week, one month, and six month tests.
 
+The GARCH method requires historical financial data. Typically, closing-day prices are used. Our model aggregated closing day prices from 1990 on in order to generate values. Volatility values were then calculated for each stock price and used in the simulation.
+
 \section{Simulation Framework}
 
 The framework under which these tests were conducted was developed in Python 2.x for compatibility purposes with available QuantLib Python libraries. These were based off of samples provided by the QuantLib project for options simulation\ref{???}. The testing framework itself merely served to facilitate connection between real data procured from Google Finance and the generated valuations for each option. Once an option for one of our symbols was found to have a present value, our simulation pulled additional data on underlying asset price and calculated a volatility value. This volatility value, the critical part of the simulation, was then used in conjunction with other parameters to formulate an options price. 

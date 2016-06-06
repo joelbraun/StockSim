@@ -6,7 +6,7 @@
 \chapter{Overview}
 \section{A Brief Introduction to Stock Options} %Section - 1.1 
 
-In finance, an option is a contract which gives the buyer (the owner or holder of the option) the right, but not the obligation, to buy or sell an underlying asset or instrument at a specified strike price on a specified date, depending on the form of the option. (~\ref{Wikipedia}). For the intent of this paper, an underlying asset or instrument will be considered to be a simple equity (or "stock", "share", etc.) in a firm. 
+In finance, an option is a contract which gives the buyer (the owner or holder of the option) the right, but not the obligation, to buy or sell an underlying asset or instrument at a specified strike price on a specified date, depending on the form of the option. (Wikipedia). For the intent of this paper, an underlying asset or instrument will be considered to be a simple equity (or "stock", "share", etc.) in a firm. 
 
 There are two types of options that will be priced as part of this simulation. The first, the \textit{Call} option, allows an investor to secure purchase of an asset at a certain prespecified price. The second, the \textit{Put} option, allows an investor to secure sale of an asset at a certain prespecified price. These prespecified prices are referred to as the 'strike' prices of the option. An option is considered worth exercising (buying or selling) in circumstances where it is \textit{in the money}. An option is in-the-money for a call when the strike price is below the underlying asset's value. It is in-the-money for a put when the strike price is above the market price of the asset. Typically, in options trading, a call option is used when investor sentiment on a stock is positive, while a put option is used when sentiment on a stock is negative. 
 
@@ -30,7 +30,7 @@ In order to model an option price, the Black-Scholes model requires several set 
 \item[Risk-free interest rate:] The rate the asset would appreciate at in a lower-risk investment.
 \end{description}
 
-Another commonly used model for estimating stock option prices is the binomial model. A binomial model formulates a random option pricing curve based on a number of time intervals. The stock price is simulated to move up or down at each step by an amount relating to volatility and time to expiry. It is somewhat analogous to the Black-Scholes model, but is a discrete-time model as opposed to a continuous one. The result of binomial method options calculations resembles a tree, as the decision is made to exercise or hold at each point.
+Another commonly used model for estimating stock option prices is the \textbf{binomial model}. A binomial model formulates a random option pricing curve based on a number of time intervals. The stock price is simulated to move up or down at each step by an amount relating to volatility and time to expiry. It is somewhat analogous to the Black-Scholes model, but is a discrete-time model as opposed to a continuous one. The result of binomial method options calculations resembles a tree, as the decision is made to exercise or hold at each point.
 
 Luckily, the binomial method requires exactly the same inputs as the Black-Scholes model. As such, we can luckily maintain a similar testing framework for both. We will explore the following binomial methods as part of this simulation:
 
@@ -43,12 +43,20 @@ Luckily, the binomial method requires exactly the same inputs as the Black-Schol
 \item{Leisen-Reimer}
 \end{itemize}
 
-Binomial methods are more commonly used in professional options simulation\ref{???}. Its ability to progressively price-in the value of an early option exercise makes it ideal for American options. 
+Binomial methods are less commonly used in professional options simulation\ref{???}. However, their ability to progressively price-in the value of an early option exercise makes it ideal for American options. 
 
 \subsection{Volatility}
 The asset's implied volatility is worth some discussion. Because volatility dictates the shifts of the random walk in the model, it has the potential to dictate the accuracy of the model altogether. There is some discussion as to whether historical volatility should be used in lieu of implied volatility. One of the simplest methods for calculating implied volatility is a guess-and-check approach involving repeated simulation volatility values. These values are calibrated until a result similar to the current option price is attained\ref{??}. This is less than ideal for our analysis, as it is not quantifiable. It also does not take into account whether current options are reasonably priced or are outliers.
 \subsubsection{The GARCH Model}
-A model commonly used in academia for quantitative finance volatility calculations is the GARCH model. The GARCH model is an autoregressive conditional heteroskedascity method that is used to model time series\ref{}. In this case, we specifically will be using the GARCH(1,1) model for calculations. 
+A model commonly used in academia for quantitative finance volatility calculations is the GARCH model. The GARCH model is an autoregressive conditional heteroskedasticity method that is used to model time series\ref{}. In this case, we specifically will be using the GARCH(1,1) model for calculations. 
+
+The GARCH model produces an $\alpha$ and $\beta$ value, as well as an $\omega$ value which represent the time series of stock prices. It assumes that the volatility value is mean reverting, or that it will always stay close to a specified value. Typically, $\alpha$ and $\beta$ are less than 1, which indicates that we can calculate the volatility as the standard deviation of the unconditional variance. This is represented by
+
+\begin{equation}
+\sigma^2 = \frac{\omega}{1 - \alpha - \beta}
+\end{equation}
+
+As is commonly known, the variance can be reduced down to the standard deviation by taking its square root.
 
 \section{Intent of Analysis}
 
