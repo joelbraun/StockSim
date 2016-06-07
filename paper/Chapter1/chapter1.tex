@@ -6,11 +6,11 @@
 \chapter{Overview}
 \section{A Brief Introduction to Stock Options} %Section - 1.1 
 
-In finance, an option is a contract which gives the buyer (the owner or holder of the option) the right, but not the obligation, to buy or sell an underlying asset or instrument at a specified strike price on a specified date, depending on the form of the option. (Wikipedia). For the intent of this paper, an underlying asset or instrument will be considered to be a simple equity (or "stock", "share", etc.) in a firm. 
+In finance, an option is a contract which gives the buyer (the owner or holder of the option) the right, but not the obligation, to buy or sell an underlying asset or instrument at a specified strike price on a specified date, depending on the form of the option. (Wikipedia)\cite{Ancey1996}. For the intent of this paper, an underlying asset or instrument will be considered to be a simple equity (or "stock", "share", etc.) in a firm. 
 
 There are two types of options that will be priced as part of this simulation. The first, the \textit{Call} option, allows an investor to secure purchase of an asset at a certain prespecified price. The second, the \textit{Put} option, allows an investor to secure sale of an asset at a certain prespecified price. These prespecified prices are referred to as the 'strike' prices of the option. An option is considered worth exercising (buying or selling) in circumstances where it is \textit{in the money}. An option is in-the-money for a call when the strike price is below the underlying asset's value. It is in-the-money for a put when the strike price is above the market price of the asset. Typically, in options trading, a call option is used when investor sentiment on a stock is positive, while a put option is used when sentiment on a stock is negative. 
 
-The style of option being bought or sold adds additional complexity to the situation. Each stock option being bought or sold is given an expiry date. An \textit{expiry date} is the date at which an option expires and a final decision must be made as to whether to exercise. There are two commonly traded types of options, however- American-Style and European-Style. American-Style stock options may be exercised at any point prior to the expiry. European-Style stock options may only be exercised at the time of expiry. This paper will solely explore American-Style options pricing as it relates to actual US market values.
+The style of option being bought or sold adds additional complexity to the situation. Each stock option being bought or sold is given an expiry date. An \textit{expiry date} is the date at which an option expires and a final decision must be made as to whether to exercise. There are two commonly traded types of options, however- American-Style and European-Style. American-Style stock options may be exercised at any point prior to the expiry. European-Style stock options may only be exercised at the time of expiry. This paper will solely explore American-Style options pricing as it relates to observable US market values.
 
 \section{Simulation of Options}
 
@@ -50,13 +50,13 @@ The asset's implied volatility is worth some discussion. Because volatility dict
 \subsubsection{The GARCH Model}
 A model commonly used in academia for quantitative finance volatility calculations is the GARCH model. The GARCH model is an autoregressive conditional heteroskedasticity method that is used to model time series\ref{}. In this case, we specifically will be using the GARCH(1,1) model for calculations. 
 
-The GARCH model produces an $\alpha$ and $\beta$ value, as well as an $\omega$ value which represent the time series of stock prices. It assumes that the volatility value is mean reverting, or that it will always stay close to a specified value. Typically, $\alpha$ and $\beta$ are less than 1, which indicates that we can calculate the volatility as the standard deviation of the unconditional variance. This is represented by
+The GARCH model produces an $\alpha$ and $\beta$ value, as well as an $\omega$ value which represent the result of fitting the model. It assumes that the volatility value is mean reverting, or that it will always stay close to a specified value. Typically, $\alpha$ and $\beta$ are less than 1, which indicates that we can calculate the volatility as the standard deviation of the unconditional variance. This is represented by
 
 \begin{equation}
 \sigma^2 = \frac{\omega}{1 - \alpha - \beta}
 \end{equation}
 
-As is commonly known, the variance can be reduced down to the standard deviation by taking its square root.
+As is commonly known, the variance can then be reduced down to the standard deviation by taking its square root.
 
 \section{Intent of Analysis}
 
@@ -69,6 +69,6 @@ The intent of our analysis on these topics was to try and answer several key que
 \item[Patterns] What patterns do we see in the accuracies/inaccuracies of these models?
 \end{description}
 
-Our analyses of these questions will be based on several datasets. The first will be a short-dated expiry set of puts and calls expiring one calendar week from the test. The second will be a long-dated expiry set of puts and calls expiring one 30-day month from the test. The third test will be the longest-dated expiry set of puts and calls expiring six 30-day months from the test. This will provide an effective cross-section of estimation methods over both the short and long-term time periods. 
+Our analyses of these questions was based on several datasets. The first was a short-dated expiry set of puts and calls expiring one calendar week from the test. The second was a long-dated expiry set of puts and calls expiring six months from the test. The third was the  longest-dated expiry set of puts and calls expiring one and a half yeas from the tested date. This provided an effective cross-section of estimation methods over both the short and long-term time periods. 
 
 

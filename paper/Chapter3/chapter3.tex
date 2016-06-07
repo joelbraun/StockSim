@@ -36,11 +36,11 @@ We then elected to plot the actual prices versus the estimated model's results. 
 
 Both put and call charts indicate that our model seems to overestimate values. This is not necessarily unexpected, as results are generated entirely upon volatility. As we can see, however, in line with our previous threshold prediction values put prices are clearly more accurately priced. We also see that options with strike prices closer to the price of the share are much harder to predict. During these tests, AAPL shares were priced around \$98. 
 
-With this test, however, no clear leading model in options pricing has made itself apparent. There also appears to be little difference experienced in using the binomial model as opposed to Black-Scholes and its variants.
+With this test, however, no clear leading model in options pricing had made itself apparent. There also appeared to be little difference experienced in using the binomial model as opposed to Black-Scholes and its variants.
 
 \section{Long Dated Puts and Calls}
 
-Since option prices vary more widely as times extend out further, tests also had to be run for longer times in order to determine their accuracy. An exipry date approximately six months in the future (January 2017) was selected. The analysis was then rerun for both sum squared error and threshold accuracy. 
+Since option prices logically vary more widely as times extend out further, tests also had to be run for longer times in order to determine their accuracy. An exipry date approximately six months in the future (January 2017) was selected. The analysis was then rerun for both sum squared error and threshold accuracy. 
 
 \begin{table}[h!]
 \centering
@@ -62,9 +62,9 @@ Leisen-Reimer & 41775.6888507\\
 \end{table}
 
 
-Once again, though, we see very little difference in the values considering the six month expiry date. This is unexpected.  The values deviate by less than one hundred in range. Looking at a threshold accuracy value, we see a pattern of decreased accuracy, at least when pricing calls. Only 17\% of calls were within \$1 of their actual values. Sixty-eight percent of puts were accurate within \$1. When increasing the threshold to \$5, the results were far better at 73\% of calls and 90\% of puts. Still, $\pm\$5$ is a very wide margin of error considering the prices of individual options contracts.
+Once again, though, we saw very little difference in the values considering the six month expiry date. This was unexpected.  The values deviated by less than one hundred in range. Looking at a threshold accuracy value, we saw a pattern of decreased accuracy, at least when pricing calls. Only 17\% of calls were within \$1 of their actual values. Sixty-eight percent of puts were accurate within \$1. When increasing the threshold to \$5, the results were far better at 73\% of calls and 90\% of puts. Still, $\pm\$5$ was a very wide margin of error considering the prices of individual options contracts.
 
-Expanding our analysis out, we'll once again look at our estimated prices for AAPL's six-month calls versus their real values. 
+Expanding our analysis out, we looked once again at our estimated prices for AAPL's six-month calls versus their real values. 
 
 \begin{center}
 \includegraphics[scale=0.66, keepaspectratio=true]{Chapter3/AAPL6MCall.png}
@@ -73,7 +73,7 @@ Expanding our analysis out, we'll once again look at our estimated prices for AA
 
 These graphs indicate very fair valuations in the case of put options, and much poorer accuracy for call options. This was indicated early on by the SSE values for puts and calls. Typically, SSE values for all call option tests were around 24,000, while put options had SSE values of around 18,000. Returning to the graphs, we see greater inaccuracy for options with strike prices around the underlying asset values. 
 
-Surprisingly, in these tests there is once again no model which clearly leads in accuracy. SSE values for each of the models were all grouped closely, and the only discernable difference in accuracy that could be found was the pricing of put or call options.
+Surprisingly, in these tests there was once again no model which clearly lead in accuracy. SSE values for each of the models were all grouped closely, and the only apparent difference in accuracy that could be found was  in the pricing of put or call options.
 
 \section{Very Long Dated Puts and Calls}
 
@@ -98,17 +98,17 @@ Leisen-Reimer & 91940.5065844\\
 \caption {\textbf{Combined SSE values from the 1.5 year expiry test.}}
 \end{table}
 
-Even at a time to expiry of 1.5 years we still observe that the models remain relatively closely grouped in their accuracies. In fact, we observe a standard deviation in SSE values of around 83.8, which is very close grouping for numbers as high as these values are. This seems to suggest that in most cases we will see little variance in the results of our estimation methods. Not only that, it also seems to suggest that there is no particular reason to use the Black-Scholes model over the binomial (or vice-versa). 
+Even at a time to expiry of 1.5 years we still observed that the models remained relatively closely grouped in their accuracies. In fact, we observed a standard deviation in SSE values of around 83.8, which is very close grouping for numbers as high as these values are. This seems to suggest that in most cases we will see little variance in the results of our estimation methods. Not only that, it also suggested that there was no particular reason to use the Black-Scholes model over the binomial (or vice-versa). 
 
-Observing threshold accuracy, we see that 42\% of calls fall within one dollar of the actual values. Forty-five percent of puts fall within one dollar of their actual value. SSE values varied widely between puts and calls once again. In this case, however, SSEs for call values were six times those of put values, equating to around 79,000. Put values averaged SSEs of around twelve thousand. 
+Observing threshold accuracy, we saw that 42\% of calls fell within one dollar of the actual values. Forty-five percent of puts fell within one dollar of their actual value. SSE values varied widely between puts and calls once again. In this case, however, SSEs for call values were six times those of put values, equating to around 79,000. Put values averaged SSEs of around twelve thousand. 
 
-Graphing the data, we observe a picture similar to what we have seen in the two previous estimations. Note the difference between the estimated call prices and the actual call prices.
+Graphing the data, we observed a picture similar to what we saw in the two previous estimations. Note the difference between the estimated call prices and the actual call prices.
 
 \begin{center}
 \includegraphics[scale=0.66, keepaspectratio=true]{Chapter3/AAPL1YCall.png}
 \includegraphics[scale=0.66, keepaspectratio=true]{Chapter3/AAPL1YPut.png}
 \end{center}
 
-In this situation, the AAPL put prices remain fairly stable and sensible. The call prices are off by very large amounts, as was suggested by our SSE calculations. This in turn seems to suggest that in the long run, both Black-Scholes and the Binomial method may overestimate the value of call returns.
+In this situation, the AAPL put prices remained fairly stable and sensible. The call prices were off by very large amounts, as was suggested by our SSE calculations. This in turn again suggests that in the long run, both Black-Scholes and the Binomial method may overestimate the value of call returns.
 
 
