@@ -75,6 +75,40 @@ These graphs indicate very fair valuations in the case of put options, and much 
 
 Surprisingly, in these tests there is once again no model which clearly leads in accuracy. SSE values for each of the models were all grouped closely, and the only discernable difference in accuracy that could be found was the pricing of put or call options.
 
-\section{One-Year Dated Puts and Calls}
+\section{Very Long Dated Puts and Calls}
 
-After observing little difference in the accuracies of the models for six-month expiry puts and calls, we decided to attempt to price options with one-year expiries. Many stocks on the DJIA don't have options data available for one year out, and as such we ended up with a limited dataset of available put and call options from AAPL and BA (Apple and Boeing). This dataset totaled 88 points for both puts and calls, and as such should be taken 
+After observing little difference in the accuracies of the models for six-month expiry puts and calls, we decided to attempt to price options with expiries almost one and a half years away from the current date. Pricing options for January 19, 2018, we saw the following SSE results:
+
+\begin{table}[h!]
+\centering
+\begin{tabu} to .8\textwidth { | X[c] | X[c] | }
+ \hline
+Method & Combined SSE (Puts + Calls)\\
+ \hline
+Barone-Adesi Whaley & 92095.2212736\\
+Bjerksund-Stensland &  92034.9437455\\
+Cox-Ross-Rubenstein & 91944.8014098\\
+Jarrow-Rudd & 91940.288989 \\
+ Equal Probabilities & 92143.5437267\\
+Trigeorgis & 91943.2074004 \\
+Tian & 91929.01258\\
+Leisen-Reimer & 91940.5065844\\
+\hline
+\end{tabu}
+\caption {\textbf{Combined SSE values from the 1.5 year expiry test.}}
+\end{table}
+
+Even at a time to expiry of 1.5 years we still observe that the models remain relatively closely grouped in their accuracies. In fact, we observe a standard deviation in SSE values of around 83.8, which is very close grouping for numbers as high as these values are. This seems to suggest that in most cases we will see little variance in the results of our estimation methods. Not only that, it also seems to suggest that there is no particular reason to use the Black-Scholes model over the binomial (or vice-versa). 
+
+Observing threshold accuracy, we see that 42\% of calls fall within one dollar of the actual values. Forty-five percent of puts fall within one dollar of their actual value. SSE values varied widely between puts and calls once again. In this case, however, SSEs for call values were six times those of put values, equating to around 79,000. Put values averaged SSEs of around twelve thousand. 
+
+Graphing the data, we observe a picture similar to what we have seen in the two previous estimations. Note the difference between the estimated call prices and the actual call prices.
+
+\begin{center}
+\includegraphics[scale=0.66, keepaspectratio=true]{Chapter3/AAPL1YCall.png}
+\includegraphics[scale=0.66, keepaspectratio=true]{Chapter3/AAPL1YPut.png}
+\end{center}
+
+In this situation, the AAPL put prices remain fairly stable and sensible. The call prices are off by very large amounts, as was suggested by our SSE calculations. This in turn seems to suggest that in the long run, both Black-Scholes and the Binomial method may overestimate the value of call returns.
+
+
